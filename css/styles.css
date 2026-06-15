@@ -708,6 +708,77 @@ img {
   cursor: pointer;
 }
 
+.dana-payment-actions {
+  display: grid;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.dana-qr-controls {
+  display: grid;
+  gap: 0.75rem;
+  background: #f8fafc;
+  border: 1px solid var(--border);
+  border-radius: 1rem;
+  padding: 1rem;
+}
+
+.dana-qr-controls label {
+  display: grid;
+  gap: 0.5rem;
+  margin: 0;
+}
+
+.dana-qr-controls input {
+  width: 100%;
+  border: 1px solid var(--border);
+  border-radius: 1rem;
+  padding: 0.95rem 1rem;
+  font: inherit;
+}
+
+.dana-qr-controls button {
+  width: max-content;
+  align-self: flex-start;
+}
+
+.dana-qr-controls small {
+  color: var(--muted);
+  display: block;
+  margin-top: 0.25rem;
+}
+
+.dana-qr-code {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem;
+  border: 1px solid var(--border);
+  border-radius: 1rem;
+  background: #ffffff;
+}
+
+.dana-qr-code img {
+  width: 100%;
+  max-width: 280px;
+  height: auto;
+  border-radius: 1rem;
+}
+
+.dana-qr-code small {
+  color: var(--muted);
+  text-align: center;
+}
+
+@media (max-width: 900px) {
+  .dana-payment-actions,
+  .dana-qr-controls,
+  .dana-qr-code {
+    width: 100%;
+  }
+}
+
 .payment-methods input[type="number"] {
   width: 100%;
   max-width: 100%;
