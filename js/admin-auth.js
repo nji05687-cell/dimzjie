@@ -24,7 +24,7 @@ adminLoginForm?.addEventListener('submit', async event => {
     const data = await resp.json();
     if (data.success) {
       localStorage.setItem('dimzjie_admin_authenticated', 'true');
-      window.location.href = 'admin.html';
+      window.location.href = 'admin-dashboard.html';
     } else {
       displayAdminLoginError(data.error || 'Kata sandi salah. Silakan coba lagi.');
     }

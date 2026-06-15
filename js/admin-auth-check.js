@@ -1,4 +1,4 @@
-const ADMIN_PAGES = ['admin.html', 'admin-track.html'];
+const ADMIN_PAGES = ['admin.html', 'admin-dashboard.html', 'admin-track.html'];
 const path = window.location.pathname.split('/').pop();
 const isAdminPage = ADMIN_PAGES.includes(path);
 
