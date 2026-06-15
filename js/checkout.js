@@ -160,6 +160,8 @@ if (generateDanaQrButton) {
 }
 
 function initializeDanaQrControls() {
+  loadSavedDanaQrSource();
+
   if (danaQrSourceInput) {
     danaQrSourceInput.value = getActiveDanaQrSource();
   }
@@ -169,32 +171,6 @@ function initializeDanaQrControls() {
 }
 
 initializeDanaQrControls();
-
-function getQrImageSource(value) {
-  if (!value) {
-    return DEFAULT_DANA_QR_IMAGE;
-  }
-
-  const trimmed = value.trim();
-  if (/^https?:\/\//i.test(trimmed)) {
-    return trimmed;
-  }
-
-  return `${QR_GENERATOR_API}${encodeURIComponent(trimmed)}`;
-}
-
-function updateDanaQrImage() {
-  const sourceValue = danaQrSourceInput?.value?.trim();
-  if (!danaQrImage) return;
-
-  const imageSrc = getQrImageSource(sourceValue || `DANA ${DANA_ACCOUNT}`);
-  setDanaQrImageSource(imageSrc);
-  saveStoredDanaQrSource(sourceValue || '');
-}
-
-if (generateDanaQrButton) {
-  generateDanaQrButton.addEventListener('click', updateDanaQrImage);
-}
 
 function clearCart() {
   window.localStorage.removeItem(CART_KEY);
@@ -282,7 +258,5 @@ function handleCheckoutSubmit(event) {
     });
 }
 
-loadSavedDanaQr();
 renderCheckoutSummary();
 checkoutForm?.addEventListener('submit', handleCheckoutSubmit);
-danaQrUpdateButton?.addEventListener('click', updateDanaQrFromInputs);
