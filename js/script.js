@@ -18,10 +18,14 @@ function loadHomepageProducts() {
   fetch('data/products.json')
     .then(response => response.json())
     .then(products => {
-      productGrid.innerHTML = products.map(product => `
+      // Tampilkan hanya 3 produk rekomendasi
+      const recommendedProducts = products.slice(0, 3);
+      productGrid.innerHTML = recommendedProducts.map(product => `
         <article class="product-card">
+          <img src="${product.image}" alt="${product.name}" class="product-image" />
           <h3>${product.name}</h3>
-          <p>${product.description}</p>
+          <p class="product-category">${product.category}</p>
+          <p class="product-description">${product.description}</p>
           <span class="price">${formatPrice(product.price)}</span>
           <a href="product.html?product=${product.slug}" class="btn btn-secondary">Lihat Detail</a>
         </article>
