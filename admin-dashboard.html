@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Dashboard - Dimzjie Outfit</title>
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="index.html" class="brand">Dimzjie Outfit</a>
+      <nav class="main-nav" id="main-nav">
+        <a href="index.html#home">Beranda</a>
+        <a href="products.html">Produk</a>
+        <a href="checkout.html">Checkout</a>
+        <a href="admin-login.html">Admin</a>
+      </nav>
+      <button class="nav-toggle" id="nav-toggle" aria-label="Buka menu">Menu</button>
+    </div>
+  </header>
+
+  <main>
+    <section class="admin-section">
+      <div class="container">
+        <div class="section-heading admin-heading">
+          <div>
+            <span>Admin Dashboard</span>
+            <h2>Riwayat Pembelian · Lacak Barang · Tambah Produk</h2>
+          </div>
+          <button id="admin-logout" class="btn btn-secondary admin-logout">Logout</button>
+        </div>
+
+        <div class="admin-content-grid">
+          <div class="admin-notifications-panel">
+            <div class="section-subheading">
+              <h3>Riwayat Pembelian</h3>
+              <p>Daftar pesanan masuk dengan detail pembayaran.</p>
+            </div>
+            <div id="purchase-history" class="admin-notifications">
+              <p>Memuat riwayat pembelian...</p>
+            </div>
+          </div>
+
+          <div class="admin-track-panel">
+            <div class="section-subheading">
+              <h3>Pelacakan Barang</h3>
+              <p>Pilih pesanan untuk melihat lokasi dan mengubah status pengiriman.</p>
+            </div>
+            <div class="track-grid">
+              <div class="track-list-panel">
+                <div class="track-action-bar">
+                  <input type="text" id="dashboard-track-search" placeholder="Cari nama atau ID order" />
+                </div>
+                <div id="dashboard-track-list" class="track-list">Memuat daftar pesanan...</div>
+              </div>
+
+              <div class="track-map-panel">
+                <div class="map-header">
+                  <h3>Lokasi Paket</h3>
+                  <p id="dashboard-map-status">Pilih pesanan untuk melihat detail lokasi.</p>
+                </div>
+                <div id="dashboard-map" class="track-map"></div>
+                <div id="dashboard-order-details" class="track-details"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="admin-product-form" style="margin-top: 2rem;">
+          <div class="section-subheading">
+            <h3>Tambah Produk</h3>
+            <p>Tambahkan produk baru ke katalog toko Anda.</p>
+          </div>
+          <form id="add-product-form" class="add-product-form">
+            <label>
+              Nama Produk
+              <input type="text" id="product-name-input" required placeholder="Masukkan nama produk" />
+            </label>
+            <label>
+              Harga (IDR)
+              <input type="number" id="product-price-input" required placeholder="Masukkan harga" />
+            </label>
+            <label>
+              Kategori
+              <input type="text" id="product-category-input" required placeholder="Atasan, Celana, Outer" />
+            </label>
+            <label>
+              Slug URL (opsional)
+              <input type="text" id="product-slug-input" placeholder="Contoh: atasan-santai" />
+            </label>
+            <label>
+              Deskripsi Produk
+              <textarea id="product-description-input" required placeholder="Masukkan deskripsi produk"></textarea>
+            </label>
+            <label>
+              Fitur / rincian (pisahkan dengan koma)
+              <textarea id="product-features-input" placeholder="Contoh: ringan, adem, jahitan rapi"></textarea>
+            </label>
+            <label>
+              URL gambar produk
+              <input type="url" id="product-image-url-input" placeholder="https://..." />
+            </label>
+            <label>
+              Atau unggah gambar produk
+              <input type="file" id="product-image-file-input" accept="image/*" />
+            </label>
+            <button type="submit" class="btn btn-primary">Tambah Produk</button>
+          </form>
+          <div id="product-form-message" class="product-form-message"></div>
+        </div>
+
+        <div class="section-subheading" style="margin-top:1.5rem;">
+          <h3>Kelola Produk</h3>
+          <p>Edit atau hapus produk yang sudah ada.</p>
+        </div>
+        <div class="product-management-controls" style="margin-bottom:1rem; display:flex; gap:0.5rem; align-items:center;">
+          <input id="product-search-input" type="text" placeholder="Cari produk berdasarkan nama, kategori, atau slug" style="flex:1; padding:0.6rem 0.8rem; border-radius:0.5rem; border:1px solid #ddd;" />
+          <label style="display:flex; align-items:center; gap:0.5rem;">
+            Per halaman
+            <select id="product-page-size" style="padding:0.4rem 0.6rem; border-radius:0.5rem;">
+              <option value="6">6</option>
+              <option value="12">12</option>
+              <option value="24">24</option>
+            </select>
+          </label>
+        </div>
+
+        <div id="admin-product-list" class="latest-products-panel">
+          <p>Memuat daftar produk...</p>
+        </div>
+
+        <div class="product-pagination" style="display:flex; gap:0.5rem; align-items:center; justify-content:center; margin-top:1rem;">
+          <button id="product-prev" class="btn btn-secondary">Sebelumnya</button>
+          <div id="product-page-info" class="muted">Halaman 1</div>
+          <button id="product-next" class="btn btn-secondary">Berikutnya</button>
+        </div>
+
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer" id="contact">
+    <div class="container footer-inner">
+      <div>
+        <h2>Dimzjie Outfit</h2>
+        <p>Jadikan gaya harian lebih percaya diri dengan pilihan baju lokal yang nyaman dan modern.</p>
+      </div>
+      <div class="footer-links">
+        <a href="index.html#home">Beranda</a>
+        <a href="products.html">Produk</a>
+        <a href="checkout.html">Checkout</a>
+        <a href="admin-login.html">Admin</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/script.js"></script>
+  <script src="js/admin-dashboard.js"></script>
+  <script src="js/admin-auth-check.js"></script>
+</body>
+</html>

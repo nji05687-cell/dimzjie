@@ -68,6 +68,25 @@ function saveProduct(data) {
   fs.writeFileSync(productsFile, JSON.stringify(existing, null, 2));
 }
 
+function loadProducts() {
+  return fs.existsSync(productsFile)
+    ? JSON.parse(fs.readFileSync(productsFile, 'utf-8'))
+    : [];
+}
+
+function writeProducts(products) {
+  fs.writeFileSync(productsFile, JSON.stringify(products, null, 2));
+}
+
+app.get('/products', (req, res) => {
+  try {
+    const products = loadProducts();
+    res.json(products);
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
 app.post('/admin-login', (req, res) => {
   try {
     const password = req.body.password;
@@ -120,6 +139,57 @@ app.post('/products', upload.single('imageFile'), (req, res) => {
   } catch (error) {
     console.error(error);
     res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+app.put('/products/:id', upload.single('imageFile'), (req, res) => {
+  try {
+    const id = Number(req.params.id);
+    const products = loadProducts();
+    const index = products.findIndex(p => p.id === id);
+    if (index === -1) return res.status(404).json({ success: false, error: 'Produk tidak ditemukan.' });
+
+    const name = req.body.name || products[index].name;
+    const price = req.body.price ? Number(req.body.price) : products[index].price;
+    const category = req.body.category || products[index].category;
+    const slug = req.body.slug || products[index].slug;
+    const description = req.body.description || products[index].description;
+    const features = req.body.features ? JSON.parse(req.body.features) : products[index].features || [];
+    const imageUrl = req.body.imageUrl && req.body.imageUrl.trim().length > 0 ? req.body.imageUrl.trim() : null;
+    const imagePath = req.file ? `/uploads/${req.file.filename}` : null;
+
+    const updated = {
+      ...products[index],
+      name,
+      price,
+      category,
+      slug,
+      description,
+      features,
+      image: imagePath || imageUrl || products[index].image,
+    };
+
+    products[index] = updated;
+    writeProducts(products);
+    res.json({ success: true, product: updated });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+app.delete('/products/:id', (req, res) => {
+  try {
+    const id = Number(req.params.id);
+    const products = loadProducts();
+    const index = products.findIndex(p => p.id === id);
+    if (index === -1) return res.status(404).json({ success: false, error: 'Produk tidak ditemukan.' });
+    const [removed] = products.splice(index, 1);
+    writeProducts(products);
+    res.json({ success: true, product: removed });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ success: false, error: err.message });
   }
 });
 
