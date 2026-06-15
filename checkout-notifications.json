@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1781523720155,
+    "name": "Test User",
+    "email": "test@example.com",
+    "phone": "08123456789",
+    "address": "Alamat Test",
+    "paymentMethod": "Transfer",
+    "total": 50000,
+    "cart": [
+      {
+        "id": 1,
+        "name": "Atasan",
+        "price": 50000,
+        "quantity": 1
+      }
+    ],
+    "transferredTo": "082376890370",
+    "transferAmount": 50000,
+    "status": "menunggu konfirmasi",
+    "shipmentStage": "Menunggu Konfirmasi",
+    "createdAt": "2026-06-15T11:42:00+00:00",
+    "proofPath": null,
+    "proofName": null
+  }
+]
