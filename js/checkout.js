@@ -12,7 +12,7 @@ const danaQrImage = document.getElementById('dana-qr');
 
 const CART_KEY = 'dimzjie_cart';
 const DANA_ACCOUNT = '082376890370';
-const DANA_QR_IMAGE = 'images/dana-qr.png';
+const DANA_QR_IMAGE = 'images/dana-qr.jpg';
 
 function formatPrice(amount) {
   return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', maximumFractionDigits: 0 }).format(amount);
