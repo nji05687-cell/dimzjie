@@ -36,7 +36,10 @@ function renderCart() {
         <strong>${item.name}</strong>
         <p>Jumlah: ${item.quantity}</p>
       </div>
-      <span>${formatPrice(item.price * item.quantity)}</span>
+      <div class="cart-item-actions">
+        <span>${formatPrice(item.price * item.quantity)}</span>
+        <button class="btn btn-danger btn-small remove-cart-item" type="button" data-id="${item.id}">Hapus</button>
+      </div>
     </div>
   `).join('');
 
@@ -49,6 +52,20 @@ function renderCart() {
       <span>${formatPrice(total)}</span>
     </div>
   `;
+
+  cartContentEl.querySelectorAll('.remove-cart-item').forEach(button => {
+    button.addEventListener('click', () => {
+      const id = Number(button.dataset.id);
+      removeFromCart(id);
+    });
+  });
+}
+
+function removeFromCart(productId) {
+  const cart = getCart();
+  const newCart = cart.filter(item => item.id !== productId);
+  saveCart(newCart);
+  renderCart();
 }
 
 function updateCart(product) {

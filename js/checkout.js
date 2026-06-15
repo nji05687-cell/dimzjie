@@ -45,7 +45,10 @@ function renderCheckoutSummary() {
         <strong>${item.name}</strong>
         <p>Jumlah: ${item.quantity}</p>
       </div>
-      <span>${formatPrice(item.price * item.quantity)}</span>
+      <div class="checkout-item-actions">
+        <span>${formatPrice(item.price * item.quantity)}</span>
+        <button class="btn btn-danger btn-small remove-checkout-item" type="button" data-id="${item.id}">Hapus</button>
+      </div>
     </div>
   `).join('');
 
@@ -62,7 +65,21 @@ function renderCheckoutSummary() {
     </div>
   `;
 
+  checkoutSummary.querySelectorAll('.remove-checkout-item').forEach(button => {
+    button.addEventListener('click', () => {
+      const id = Number(button.dataset.id);
+      removeFromCart(id);
+    });
+  });
+
   renderDanaPaymentInfo(total);
+}
+
+function removeFromCart(productId) {
+  const cart = getCart();
+  const newCart = cart.filter(item => item.id !== productId);
+  window.localStorage.setItem(CART_KEY, JSON.stringify(newCart));
+  renderCheckoutSummary();
 }
 
 function renderDanaPaymentInfo(total) {

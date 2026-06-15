@@ -1,10 +1,16 @@
 const adminLoginForm = document.getElementById('admin-login-form');
 const adminPasswordInput = document.getElementById('admin-password-input');
 const adminLoginError = document.getElementById('admin-login-error');
+const STATIC_ADMIN_PASSWORD = 'dimzjie123';
 
 function displayAdminLoginError(message) {
   if (!adminLoginError) return;
   adminLoginError.textContent = message;
+}
+
+function completeAdminLogin() {
+  localStorage.setItem('dimzjie_admin_authenticated', 'true');
+  window.location.href = 'admin-dashboard.html';
 }
 
 adminLoginForm?.addEventListener('submit', async event => {
@@ -21,14 +27,29 @@ adminLoginForm?.addEventListener('submit', async event => {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ password }),
     });
-    const data = await resp.json();
-    if (data.success) {
-      localStorage.setItem('dimzjie_admin_authenticated', 'true');
-      window.location.href = 'admin-dashboard.html';
-    } else {
+
+    if (resp.ok) {
+      const data = await resp.json();
+      if (data.success) {
+        completeAdminLogin();
+        return;
+      }
       displayAdminLoginError(data.error || 'Kata sandi salah. Silakan coba lagi.');
+      return;
     }
+
+    // Jika backend tidak tersedia, gunakan fallback password lokal.
+    if (password === STATIC_ADMIN_PASSWORD) {
+      completeAdminLogin();
+      return;
+    }
+
+    displayAdminLoginError('Aplikasi server tidak berjalan. Coba jalankan server atau periksa kata sandi.');
   } catch (err) {
+    if (password === STATIC_ADMIN_PASSWORD) {
+      completeAdminLogin();
+      return;
+    }
     displayAdminLoginError('Gagal memeriksa kata sandi. Coba lagi.');
   }
 });
