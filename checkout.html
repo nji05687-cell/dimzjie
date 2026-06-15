@@ -47,11 +47,12 @@
             </label>
             <div class="payment-methods">
               <span class="payment-label">Metode Pembayaran</span>
-              <label><input type="radio" name="payment" value="Bank Transfer" checked /> Bank Transfer (BCA / Mandiri / BNI)</label>
-              <label><input type="radio" name="payment" value="QRIS" /> QRIS</label>
-              <label><input type="radio" name="payment" value="E-Wallet" /> E-Wallet (OVO / Dana / ShopeePay)</label>
+              <div class="payment-note">
+                Transfer DANA ke nomor <strong>082376890370</strong> sebelum menekan tombol konfirmasi.
+              </div>
+              <label><input type="checkbox" id="confirm-transfer" /> Saya sudah transfer ke DANA 082376890370</label>
             </div>
-            <button type="submit" class="btn btn-primary">Bayar dan Konfirmasi</button>
+            <button type="submit" class="btn btn-primary">Konfirmasi Transfer</button>
           </form>
         </div>
         <div class="checkout-summary-box">

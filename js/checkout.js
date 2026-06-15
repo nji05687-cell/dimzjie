@@ -72,36 +72,45 @@ function handleCheckoutSubmit(event) {
     return;
   }
 
-  const paymentMethod = checkoutForm.querySelector('input[name="payment"]:checked').value;
+  const confirmTransfer = document.getElementById('confirm-transfer');
+  if (!confirmTransfer?.checked) {
+    alert('Silakan konfirmasi bahwa Anda sudah transfer ke nomor DANA 082376890370.');
+    return;
+  }
 
-  fetch('/create-checkout-session', {
+  const orderData = {
+    name: customerName.value,
+    email: customerEmail.value,
+    phone: customerPhone.value,
+    address: customerAddress.value,
+    paymentMethod: 'DANA Transfer',
+    total: calculateCartTotal(cart),
+    cart,
+    transferredTo: '082376890370',
+    status: 'menunggu konfirmasi',
+    createdAt: new Date().toISOString(),
+  };
+
+  fetch('/checkout-notification', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify({
-      cart,
-      customer: {
-        name: customerName.value,
-        email: customerEmail.value,
-        phone: customerPhone.value,
-        address: customerAddress.value,
-      },
-      paymentMethod,
-    }),
+    body: JSON.stringify(orderData),
   })
     .then(response => response.json())
     .then(data => {
-      if (data.url) {
+      if (data.success) {
+        window.localStorage.setItem('dimzjie_last_order', JSON.stringify(orderData));
         clearCart();
-        window.location.href = data.url;
+        window.location.href = 'confirm.html';
       } else {
-        alert('Gagal membuat sesi pembayaran. Silakan coba lagi.');
+        alert('Gagal mengirim notifikasi checkout. Silakan coba lagi.');
       }
     })
     .catch(error => {
       console.error(error);
-      alert('Terjadi kesalahan saat membuat pembayaran.');
+      alert('Terjadi kesalahan saat mengirim data checkout.');
     });
 }
 

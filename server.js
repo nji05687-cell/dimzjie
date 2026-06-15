@@ -1,57 +1,45 @@
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
-const Stripe = require('stripe');
-require('dotenv').config();
+const fs = require('fs');
 
 const app = express();
-const stripe = Stripe(process.env.STRIPE_SECRET_KEY);
-
 app.use(cors());
 app.use(express.json());
 app.use(express.static(path.join(__dirname, '/')));
 
-app.post('/create-checkout-session', async (req, res) => {
+const notificationsFile = path.join(__dirname, 'checkout-notifications.json');
+
+function saveNotification(data) {
+  const existing = fs.existsSync(notificationsFile)
+    ? JSON.parse(fs.readFileSync(notificationsFile, 'utf-8'))
+    : [];
+  existing.push(data);
+  fs.writeFileSync(notificationsFile, JSON.stringify(existing, null, 2));
+}
+
+app.post('/checkout-notification', (req, res) => {
   try {
-    const { cart, customer, paymentMethod } = req.body;
-    const lineItems = cart.map(item => ({
-      price_data: {
-        currency: 'idr',
-        product_data: {
-          name: item.name,
-          description: item.description || item.category || 'Produk Dimzjie Outfit',
-        },
-        unit_amount: item.price,
-      },
-      quantity: item.quantity,
-    }));
-
-    const session = await stripe.checkout.sessions.create({
-      payment_method_types: ['card'],
-      mode: 'payment',
-      line_items: lineItems,
-      customer_email: customer.email,
-      success_url: `${req.protocol}://${req.get('host')}/confirm.html?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${req.protocol}://${req.get('host')}/checkout.html`,
-      metadata: {
-        name: customer.name,
-        phone: customer.phone,
-        address: customer.address,
-        paymentMethod,
-      },
-    });
-
-    res.json({ url: session.url });
+    const notification = {
+      id: Date.now(),
+      ...req.body,
+      createdAt: new Date().toISOString(),
+    };
+    saveNotification(notification);
+    console.log('Notifikasi checkout baru:', notification);
+    res.json({ success: true });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: error.message });
+    res.status(500).json({ success: false, error: error.message });
   }
 });
 
-app.get('/checkout-session', async (req, res) => {
+app.get('/checkout-notifications', (req, res) => {
   try {
-    const session = await stripe.checkout.sessions.retrieve(req.query.session_id);
-    res.json(session);
+    const notifications = fs.existsSync(notificationsFile)
+      ? JSON.parse(fs.readFileSync(notificationsFile, 'utf-8'))
+      : [];
+    res.json(notifications);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
