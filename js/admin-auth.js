@@ -32,19 +32,4 @@ adminLoginForm?.addEventListener('submit', async event => {
     displayAdminLoginError('Gagal memeriksa kata sandi. Coba lagi.');
   }
 });
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ password }),
-    });
 
-    const data = await response.json();
-    if (data.success) {
-      localStorage.setItem('dimzjie_admin_authenticated', 'true');
-      window.location.href = 'admin.html';
-    } else {
-      displayAdminLoginError(data.error || 'Kata sandi salah. Silakan coba lagi.');
-    }
-  } catch (error) {
-    displayAdminLoginError('Terjadi kesalahan saat login. Silakan coba lagi.');
-  }
-});
