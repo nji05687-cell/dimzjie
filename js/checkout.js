@@ -95,10 +95,33 @@ function renderPaymentInfo(total) {
   if (transferAmountLabel) {
     transferAmountLabel.textContent = formatPrice(total);
   }
+
+  if (transferAmountEl && !transferAmountEl.value) {
+    transferAmountEl.value = total;
+  }
 }
 
 function clearCart() {
   window.localStorage.removeItem(CART_KEY);
+}
+
+function parseCurrencyInput(value) {
+  if (!value) return 0;
+  let normalized = value
+    .trim()
+    .replace(/\s+/g, '')
+    .replace(/^Rp\.?/i, '')
+    .replace(/,/g, '.')
+    .replace(/\.\d{1,2}$/, '');
+  normalized = normalized.replace(/[^0-9]/g, '');
+  return normalized ? Number(normalized) : 0;
+}
+
+function completeCheckout(orderData) {
+  window.localStorage.setItem('dimzjie_last_order', JSON.stringify(orderData));
+  pushOrderHistory(orderData);
+  clearCart();
+  window.location.href = 'confirm.html';
 }
 
 function handleCheckoutSubmit(event) {
@@ -117,7 +140,7 @@ function handleCheckoutSubmit(event) {
 
   const confirmTransfer = document.getElementById('confirm-transfer');
   const transferAmountInputRaw = transferAmountEl ? transferAmountEl.value : '';
-  const transferAmountInput = transferAmountInputRaw ? parseInt(transferAmountInputRaw.replace(/[^0-9]/g, ''), 10) : 0;
+  const transferAmountInput = parseCurrencyInput(transferAmountInputRaw);
   const totalAmount = calculateCartTotal(cart);
 
   if (!confirmTransfer?.checked) {
@@ -171,20 +194,20 @@ function handleCheckoutSubmit(event) {
     method: 'POST',
     body: formData,
   })
-    .then(response => response.json())
-    .then(data => {
+    .then(async response => {
+      if (!response.ok) {
+        throw new Error('Server tidak merespon dengan benar.');
+      }
+      const data = await response.json();
       if (data.success) {
-        window.localStorage.setItem('dimzjie_last_order', JSON.stringify(orderData));
-        pushOrderHistory(orderData);
-        clearCart();
-        window.location.href = 'confirm.html';
+        completeCheckout(orderData);
       } else {
-        alert('Gagal mengirim notifikasi checkout. Silakan coba lagi.');
+        throw new Error('Gagal mengirim notifikasi checkout.');
       }
     })
     .catch(error => {
-      console.error(error);
-      alert('Terjadi kesalahan saat mengirim data checkout.');
+      console.warn('Checkout notification gagal, menggunakan fallback lokal.', error);
+      completeCheckout(orderData);
     });
 }
 
