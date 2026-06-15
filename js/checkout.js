@@ -12,6 +12,8 @@ const danaQrImage = document.getElementById('dana-qr');
 
 const CART_KEY = 'dimzjie_cart';
 const DANA_ACCOUNT = '082376890370';
+// Bisa diganti dengan URL langsung ke gambar QR code jika ingin pakai link.
+// Contoh: 'https://example.com/qr-code.jpg'
 const DANA_QR_IMAGE = 'images/dana-qr.jpg';
 
 function formatPrice(amount) {
