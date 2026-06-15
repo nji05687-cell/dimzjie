@@ -114,6 +114,12 @@ img {
   flex-wrap: wrap;
 }
 
+.hero-actions .btn-secondary {
+  background: var(--surface);
+  color: var(--primary);
+  border: 1px solid var(--primary);
+}
+
 .btn {
   display: inline-flex;
   align-items: center;
@@ -273,6 +279,34 @@ img {
   position: absolute;
   left: 0;
   color: var(--accent);
+}
+
+.checkout-cta {
+  padding: 3rem 0;
+}
+
+.cta-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 2rem;
+  padding: 2rem;
+  box-shadow: var(--shadow);
+}
+
+.cta-card p {
+  color: var(--muted);
+  max-width: 44rem;
+}
+
+@media (max-width: 900px) {
+  .cta-card {
+    flex-direction: column;
+    text-align: center;
+  }
 }
 
 .testimonial {
