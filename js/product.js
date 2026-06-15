@@ -1,0 +1,98 @@
+const productNameEl = document.getElementById('product-name');
+const productImageEl = document.getElementById('product-image');
+const productDescriptionEl = document.getElementById('product-description');
+const productFeaturesEl = document.getElementById('product-features');
+const productPriceEl = document.getElementById('product-price');
+const productCategoryEl = document.getElementById('product-category');
+const addToCartButton = document.getElementById('add-to-cart');
+const cartContentEl = document.getElementById('cart-content');
+
+const CART_KEY = 'dimzjie_cart';
+
+function formatPrice(amount) {
+  return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', maximumFractionDigits: 0 }).format(amount);
+}
+
+function getCart() {
+  const stored = window.localStorage.getItem(CART_KEY);
+  return stored ? JSON.parse(stored) : [];
+}
+
+function saveCart(cart) {
+  window.localStorage.setItem(CART_KEY, JSON.stringify(cart));
+}
+
+function renderCart() {
+  const cart = getCart();
+
+  if (cart.length === 0) {
+    cartContentEl.innerHTML = '<p>Keranjang kosong. Tambahkan produk untuk mulai belanja.</p>';
+    return;
+  }
+
+  const items = cart.map(item => `
+    <div class="cart-item">
+      <div>
+        <strong>${item.name}</strong>
+        <p>Jumlah: ${item.quantity}</p>
+      </div>
+      <span>${formatPrice(item.price * item.quantity)}</span>
+    </div>
+  `).join('');
+
+  const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+
+  cartContentEl.innerHTML = `
+    <div class="cart-list">${items}</div>
+    <div class="cart-total">
+      <strong>Total:</strong>
+      <span>${formatPrice(total)}</span>
+    </div>
+  `;
+}
+
+function updateCart(product) {
+  const cart = getCart();
+  const existing = cart.find(item => item.id === product.id);
+
+  if (existing) {
+    existing.quantity += 1;
+  } else {
+    cart.push({ ...product, quantity: 1 });
+  }
+
+  saveCart(cart);
+  renderCart();
+}
+
+function getProductSlug() {
+  const urlParams = new URLSearchParams(window.location.search);
+  return urlParams.get('product') || 'atasan-santai';
+}
+
+function loadProduct() {
+  const slug = getProductSlug();
+
+  fetch('data/products.json')
+    .then(response => response.json())
+    .then(products => {
+      const product = products.find(item => item.slug === slug) || products[0];
+      productNameEl.textContent = product.name;
+      productImageEl.src = product.image;
+      productImageEl.alt = product.name;
+      productDescriptionEl.textContent = product.description;
+      productCategoryEl.textContent = product.category;
+      productPriceEl.textContent = formatPrice(product.price);
+      productFeaturesEl.innerHTML = product.features.map(feature => `<li>${feature}</li>`).join('');
+
+      addToCartButton.addEventListener('click', () => updateCart(product));
+    })
+    .catch(() => {
+      productNameEl.textContent = 'Produk tidak tersedia';
+      productDescriptionEl.textContent = 'Silakan kembali dan pilih produk lain.';
+      addToCartButton.disabled = true;
+    });
+}
+
+loadProduct();
+renderCart();

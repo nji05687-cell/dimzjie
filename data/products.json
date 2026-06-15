@@ -1,0 +1,47 @@
+[
+  {
+    "id": 1,
+    "name": "Atasan Santai",
+    "price": 199000,
+    "slug": "atasan-santai",
+    "category": "Atasan",
+    "description": "Atasan premium dari bahan lembut yang nyaman dipakai sepanjang hari. Cocok untuk hangout, kerja hybrid, dan aktivitas kasual.",
+    "features": [
+      "Material lokal berkualitas",
+      "Potongan modern dan mudah dipadukan",
+      "Tekstur adem dan ringan",
+      "Detail jahitan rapi dan tahan lama"
+    ],
+    "image": "https://images.unsplash.com/photo-1512436991641-6745cdb1723f?auto=format&fit=crop&w=1200&q=80"
+  },
+  {
+    "id": 2,
+    "name": "Celana Chino Premium",
+    "price": 249000,
+    "slug": "celana-chino-premium",
+    "category": "Celana",
+    "description": "Celana chino pas badan dengan sentuhan formal kasual. Ringan, kuat, dan cocok dipakai di kantor atau weekend.",
+    "features": [
+      "Bahan mudah bergerak",
+      "Potongan slim fit namun tetap nyaman",
+      "Warna netral yang mudah dipadankan",
+      "Lapisan pinggang elastis lembut"
+    ],
+    "image": "https://images.unsplash.com/photo-1520975867159-6cde70cf44e0?auto=format&fit=crop&w=1200&q=80"
+  },
+  {
+    "id": 3,
+    "name": "Outer Ringan",
+    "price": 299000,
+    "slug": "outer-ringan",
+    "category": "Outer",
+    "description": "Outer ringan yang mudah dibuat statement untuk tampilan layering. Cocok dipakai saat jalan-jalan dan bersiap di cuaca tidak terlalu panas.",
+    "features": [
+      "Desain minimalis dengan nuansa modern",
+      "Bahan nyaman dan bernapas",
+      "Panel saku praktis",
+      "Tahan lama dengan jahitan ekstra kuat"
+    ],
+    "image": "https://images.unsplash.com/photo-1512436991641-6745cdb1723f?auto=format&fit=crop&w=1200&q=80"
+  }
+]
