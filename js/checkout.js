@@ -74,7 +74,7 @@ function renderDanaPaymentInfo(total) {
   }
 
   if (danaQrImage) {
-    const qrText = encodeURIComponent(`DANA Transfer | Nomor: ${DANA_ACCOUNT} | Jumlah: ${formatPrice(total)}`);
+    const qrText = encodeURIComponent(`DANA:${DANA_ACCOUNT}`);
     danaQrImage.src = `https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=${qrText}`;
     danaQrImage.alt = `QR Code transfer DANA ke ${DANA_ACCOUNT} sejumlah ${formatPrice(total)}`;
   }

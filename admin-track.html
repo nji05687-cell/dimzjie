@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Tracking - Dimzjie Outfit</title>
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="index.html" class="brand">Dimzjie Outfit</a>
+      <nav class="main-nav" id="main-nav">
+        <a href="index.html#home">Beranda</a>
+        <a href="products.html">Produk</a>
+        <a href="checkout.html">Checkout</a>
+        <a href="admin.html">Admin</a>
+        <a href="admin-track.html" class="active">Tracking</a>
+      </nav>
+      <button class="nav-toggle" id="nav-toggle" aria-label="Buka menu">Menu</button>
+    </div>
+  </header>
+
+  <main>
+    <section class="admin-track-section">
+      <div class="container">
+        <div class="section-heading">
+          <span>Tracking Pengiriman</span>
+          <h2>Pantau Status Pesanan dan Lokasi Paket</h2>
+        </div>
+
+        <div class="track-grid">
+          <div class="track-list-panel">
+            <div class="track-action-bar">
+              <input type="text" id="track-search" placeholder="Cari nama atau ID order" />
+            </div>
+            <div id="track-list" class="track-list">
+              <p>Memuat daftar pesanan...</p>
+            </div>
+          </div>
+
+          <div class="track-map-panel">
+            <div class="map-header">
+              <h3>Lokasi Paket</h3>
+              <p id="map-status">Pilih pesanan untuk melihat detail lokasi.</p>
+            </div>
+            <div id="map" class="track-map"></div>
+            <div id="order-details" class="track-details"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer" id="contact">
+    <div class="container footer-inner">
+      <div>
+        <h2>Dimzjie Outfit</h2>
+        <p>Jadikan gaya harian lebih percaya diri dengan pilihan baju lokal yang nyaman dan modern.</p>
+      </div>
+      <div class="footer-links">
+        <a href="index.html#home">Beranda</a>
+        <a href="products.html">Produk</a>
+        <a href="checkout.html">Checkout</a>
+        <a href="admin.html">Admin</a>
+        <a href="admin-track.html">Tracking</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/script.js"></script>
+  <script src="js/admin-track.js"></script>
+</body>
+</html>

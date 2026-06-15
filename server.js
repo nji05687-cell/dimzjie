@@ -3,11 +3,16 @@ const cors = require('cors');
 const path = require('path');
 const fs = require('fs');
 const multer = require('multer');
+const dotenv = require('dotenv');
+
+dotenv.config();
 
 const app = express();
 app.use(cors());
 app.use(express.json());
 app.use(express.static(path.join(__dirname, '/')));
+
+const GOOGLE_MAPS_API_KEY = process.env.GOOGLE_MAPS_API_KEY || '';
 
 const notificationsFile = path.join(__dirname, 'checkout-notifications.json');
 const uploadDir = path.join(__dirname, 'uploads');
@@ -37,7 +42,8 @@ app.post('/checkout-notification', upload.single('proof'), (req, res) => {
       cart: req.body.cart ? JSON.parse(req.body.cart) : [],
       transferredTo: req.body.transferredTo,
       transferAmount: Number(req.body.transferAmount) || 0,
-      status: req.body.status || 'menunggu konfirmasi',
+      status: req.body.status || 'Menunggu Konfirmasi',
+      shipmentStage: 'Menunggu Konfirmasi',
       createdAt: req.body.createdAt || new Date().toISOString(),
       proofPath: req.file ? `/uploads/${req.file.filename}` : null,
       proofName: req.file ? req.file.originalname : null,
@@ -106,6 +112,46 @@ app.get('/checkout-notifications', (req, res) => {
     res.json(notifications);
   } catch (error) {
     res.status(500).json({ error: error.message });
+  }
+});
+
+app.get('/config', (req, res) => {
+  res.json({ googleMapsApiKey: GOOGLE_MAPS_API_KEY });
+});
+
+app.put('/checkout-notification/:id', (req, res) => {
+  try {
+    const id = Number(req.params.id);
+    const notifications = fs.existsSync(notificationsFile)
+      ? JSON.parse(fs.readFileSync(notificationsFile, 'utf-8'))
+      : [];
+
+    const index = notifications.findIndex(item => item.id === id);
+    if (index === -1) {
+      return res.status(404).json({ success: false, error: 'Order tidak ditemukan.' });
+    }
+
+    const updatedLocation = req.body.location && typeof req.body.location === 'object'
+      ? {
+          lat: Number(req.body.location.lat) || notifications[index].location?.lat || null,
+          lng: Number(req.body.location.lng) || notifications[index].location?.lng || null,
+        }
+      : notifications[index].location || null;
+
+    notifications[index] = {
+      ...notifications[index],
+      ...req.body,
+      location: updatedLocation,
+      shipmentStage: req.body.shipmentStage || notifications[index].shipmentStage,
+      status: req.body.status || notifications[index].status,
+      updatedAt: new Date().toISOString(),
+    };
+
+    fs.writeFileSync(notificationsFile, JSON.stringify(notifications, null, 2));
+    res.json({ success: true, order: notifications[index] });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ success: false, error: error.message });
   }
 });
 
