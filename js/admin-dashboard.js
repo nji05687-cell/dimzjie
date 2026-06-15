@@ -99,7 +99,7 @@ function loadPurchaseHistory() {
     .then(resp => resp.json())
     .then(data => renderPurchaseHistory(data))
     .catch(() => {
-      if (purchaseHistoryEl) purchaseHistoryEl.innerHTML = '<p>Gagal memuat riwayat pembelian.</p>';
+      if (purchaseHistoryEl) purchaseHistoryEl.innerHTML = '<p>Gagal memuat riwayat pembelian. Pastikan server Node dijalankan dengan <code>npm start</code> dan buka halaman lewat <strong>http://localhost:3000</strong>.</p>';
     });
 }
 
@@ -307,7 +307,7 @@ function loadOrders() {
       renderTrackList();
     })
     .catch(() => {
-      if (dashboardTrackList) dashboardTrackList.innerHTML = '<p>Gagal memuat pesanan.</p>';
+      if (dashboardTrackList) dashboardTrackList.innerHTML = '<p>Gagal memuat pesanan. Pastikan server Node dijalankan dengan <code>npm start</code> dan buka halaman lewat <strong>http://localhost:3000</strong>.</p>';
     });
 }
 

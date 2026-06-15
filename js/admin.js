@@ -62,7 +62,7 @@ fetch('/checkout-notifications')
   .then(data => renderNotifications(data))
   .catch(() => {
     if (adminNotifications) {
-      adminNotifications.innerHTML = '<p>Gagal memuat notifikasi. Silakan coba lagi nanti.</p>';
+      adminNotifications.innerHTML = '<p>Gagal memuat notifikasi. Pastikan server Node dijalankan dengan <code>npm start</code> dan buka halaman lewat <strong>http://localhost:3000</strong>.</p>';
     }
   });
 function createSlug(value) {
