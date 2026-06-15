@@ -666,13 +666,24 @@ img {
 }
 
 .checkout-form input,
-.checkout-form textarea {
+.checkout-form textarea,
+.dana-qr-controls input {
   width: 100%;
   border: 1px solid var(--border);
   border-radius: 1rem;
   padding: 0.95rem 1rem;
   margin-top: 0.5rem;
   font: inherit;
+  background: var(--surface);
+  color: var(--primary);
+}
+
+.checkout-form input:focus,
+.checkout-form textarea:focus,
+.dana-qr-controls input:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 4px rgba(239, 68, 68, 0.12);
 }
 
 .checkout-form textarea {
@@ -740,6 +751,17 @@ img {
 .dana-qr-controls button {
   width: max-content;
   align-self: flex-start;
+  padding: 0.75rem 1.2rem;
+  border-radius: 999px;
+  font-weight: 600;
+  background: var(--primary);
+  color: #fff;
+  border: none;
+  cursor: pointer;
+}
+
+.dana-qr-controls button:hover {
+  background: #111827;
 }
 
 .dana-qr-controls small {
