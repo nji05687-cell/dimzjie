@@ -159,9 +159,20 @@ if (generateDanaQrButton) {
   generateDanaQrButton.addEventListener('click', updateDanaQrImage);
 }
 
+function initializeDanaQrControls() {
+  if (danaQrSourceInput) {
+    danaQrSourceInput.value = getActiveDanaQrSource();
+  }
+  if (danaQrImage) {
+    danaQrImage.src = getQrImageSource(getActiveDanaQrSource());
+  }
+}
+
+initializeDanaQrControls();
+
 function getQrImageSource(value) {
   if (!value) {
-    return DANA_QR_IMAGE;
+    return DEFAULT_DANA_QR_IMAGE;
   }
 
   const trimmed = value.trim();
@@ -176,7 +187,9 @@ function updateDanaQrImage() {
   const sourceValue = danaQrSourceInput?.value?.trim();
   if (!danaQrImage) return;
 
-  danaQrImage.src = getQrImageSource(sourceValue || `DANA ${DANA_ACCOUNT}`);
+  const imageSrc = getQrImageSource(sourceValue || `DANA ${DANA_ACCOUNT}`);
+  setDanaQrImageSource(imageSrc);
+  saveStoredDanaQrSource(sourceValue || '');
 }
 
 if (generateDanaQrButton) {
