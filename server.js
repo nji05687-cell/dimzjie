@@ -51,6 +51,53 @@ app.post('/checkout-notification', upload.single('proof'), (req, res) => {
   }
 });
 
+const productsFile = path.join(__dirname, 'data', 'products.json');
+
+function saveProduct(data) {
+  const existing = fs.existsSync(productsFile)
+    ? JSON.parse(fs.readFileSync(productsFile, 'utf-8'))
+    : [];
+  existing.push(data);
+  fs.writeFileSync(productsFile, JSON.stringify(existing, null, 2));
+}
+
+app.post('/products', upload.single('imageFile'), (req, res) => {
+  try {
+    const name = req.body.name;
+    const price = Number(req.body.price) || 0;
+    const category = req.body.category;
+    const slug = req.body.slug;
+    const description = req.body.description;
+    const features = req.body.features ? JSON.parse(req.body.features) : [];
+    const imageUrl = req.body.imageUrl && req.body.imageUrl.trim().length > 0
+      ? req.body.imageUrl.trim()
+      : null;
+    const imagePath = req.file ? `/uploads/${req.file.filename}` : null;
+
+    if (!name || !price || !category || !slug || !description) {
+      return res.status(400).json({ success: false, error: 'Data produk tidak lengkap.' });
+    }
+
+    const product = {
+      id: Date.now(),
+      name,
+      price,
+      slug,
+      category,
+      description,
+      features,
+      image: imagePath || imageUrl,
+    };
+
+    saveProduct(product);
+    console.log('Produk baru ditambahkan:', product);
+    res.json({ success: true, product });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
 app.get('/checkout-notifications', (req, res) => {
   try {
     const notifications = fs.existsSync(notificationsFile)

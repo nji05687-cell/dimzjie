@@ -30,6 +30,49 @@
         <div id="admin-notifications" class="admin-notifications">
           <p>Memuat notifikasi...</p>
         </div>
+
+        <div class="admin-product-form">
+          <div class="section-heading">
+            <span>Produk Baru</span>
+            <h2>Tambah Barang dan Foto Produk</h2>
+          </div>
+          <form id="add-product-form" class="add-product-form">
+            <label>
+              Nama Produk
+              <input type="text" id="product-name-input" required placeholder="Masukkan nama produk" />
+            </label>
+            <label>
+              Harga (IDR)
+              <input type="number" id="product-price-input" required placeholder="Masukkan harga" />
+            </label>
+            <label>
+              Kategori
+              <input type="text" id="product-category-input" required placeholder="Atasan, Celana, Outer" />
+            </label>
+            <label>
+              Slug URL (opsional)
+              <input type="text" id="product-slug-input" placeholder="Contoh: atasan-santai" />
+            </label>
+            <label>
+              Deskripsi Produk
+              <textarea id="product-description-input" required placeholder="Masukkan deskripsi produk"></textarea>
+            </label>
+            <label>
+              Fitur / rincian (pisahkan dengan koma)
+              <textarea id="product-features-input" placeholder="Contoh: ringan, adem, jahitan rapi"></textarea>
+            </label>
+            <label>
+              URL gambar produk
+              <input type="url" id="product-image-url-input" placeholder="https://..." />
+            </label>
+            <label>
+              Atau unggah gambar produk
+              <input type="file" id="product-image-file-input" accept="image/*" />
+            </label>
+            <button type="submit" class="btn btn-primary">Tambah Produk</button>
+          </form>
+          <div id="product-form-message" class="product-form-message"></div>
+        </div>
       </div>
     </section>
   </main>
