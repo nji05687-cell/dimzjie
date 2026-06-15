@@ -73,46 +73,36 @@ function handleCheckoutSubmit(event) {
   }
 
   const paymentMethod = checkoutForm.querySelector('input[name="payment"]:checked').value;
-  const total = calculateCartTotal(cart);
 
-  const orderSummary = `
-Pesanan berhasil dibuat!\n\nNama: ${customerName.value}
-Email: ${customerEmail.value}
-Telepon: ${customerPhone.value}
-Alamat: ${customerAddress.value}
-Metode Pembayaran: ${paymentMethod}
-Total Pembayaran: ${formatPrice(total)}\n\nSilakan lanjutkan ke instruksi pembayaran berikut:
-`;
-
-  let paymentInstructions = '';
-  switch (paymentMethod) {
-    case 'Bank Transfer':
-      paymentInstructions = `Bank Transfer ke:\n- BCA 123-456-7890 a.n. Dimzjie Outfit\n- Mandiri 987-654-3210 a.n. Dimzjie Outfit\n- BNI 112-233-4455 a.n. Dimzjie Outfit\n\nSetelah transfer, konfirmasi melalui chat atau email.`;
-      break;
-    case 'QRIS':
-      paymentInstructions = `Bayar menggunakan QRIS melalui aplikasi dompet digital Anda. Scan kode QR yang muncul pada halaman konfirmasi.`;
-      break;
-    case 'E-Wallet':
-      paymentInstructions = `Bayar melalui E-Wallet: OVO, Dana, atau ShopeePay. Pastikan nominal sama dengan total pembayaran.`;
-      break;
-    default:
-      paymentInstructions = 'Pilih metode pembayaran yang tersedia.';
-  }
-
-  const orderData = {
-    name: customerName.value,
-    email: customerEmail.value,
-    phone: customerPhone.value,
-    address: customerAddress.value,
-    paymentMethod,
-    total,
-    cart,
-    paymentInstructions,
-  };
-
-  window.localStorage.setItem('dimzjie_last_order', JSON.stringify(orderData));
-  clearCart();
-  window.location.href = 'confirm.html';
+  fetch('/create-checkout-session', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      cart,
+      customer: {
+        name: customerName.value,
+        email: customerEmail.value,
+        phone: customerPhone.value,
+        address: customerAddress.value,
+      },
+      paymentMethod,
+    }),
+  })
+    .then(response => response.json())
+    .then(data => {
+      if (data.url) {
+        clearCart();
+        window.location.href = data.url;
+      } else {
+        alert('Gagal membuat sesi pembayaran. Silakan coba lagi.');
+      }
+    })
+    .catch(error => {
+      console.error(error);
+      alert('Terjadi kesalahan saat membuat pembayaran.');
+    });
 }
 
 renderCheckoutSummary();
