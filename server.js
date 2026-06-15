@@ -13,6 +13,7 @@ app.use(express.json());
 app.use(express.static(path.join(__dirname, '/')));
 
 const GOOGLE_MAPS_API_KEY = process.env.GOOGLE_MAPS_API_KEY || '';
+const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'dimzjie123';
 
 const notificationsFile = path.join(__dirname, 'checkout-notifications.json');
 const uploadDir = path.join(__dirname, 'uploads');
@@ -66,6 +67,24 @@ function saveProduct(data) {
   existing.push(data);
   fs.writeFileSync(productsFile, JSON.stringify(existing, null, 2));
 }
+
+app.post('/admin-login', (req, res) => {
+  try {
+    const password = req.body.password;
+    if (!password) {
+      return res.status(400).json({ success: false, error: 'Kata sandi diperlukan.' });
+    }
+
+    if (password !== ADMIN_PASSWORD) {
+      return res.status(401).json({ success: false, error: 'Kata sandi salah.' });
+    }
+
+    res.json({ success: true });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
 
 app.post('/products', upload.single('imageFile'), (req, res) => {
   try {

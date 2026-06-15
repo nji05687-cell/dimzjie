@@ -23,15 +23,30 @@
   <main>
     <section class="admin-section">
       <div class="container">
-        <div class="section-heading">
-          <span>Admin</span>
-          <h2>Notifikasi Checkout</h2>
-        </div>
-        <div id="admin-notifications" class="admin-notifications">
-          <p>Memuat notifikasi...</p>
+        <div class="section-heading admin-heading">
+          <div>
+            <span>Admin</span>
+            <h2>Notifikasi Checkout & Tambah Produk</h2>
+          </div>
+          <button id="admin-logout" class="btn btn-secondary admin-logout">Logout</button>
         </div>
 
-        <div class="admin-product-form">
+        <div class="admin-content-grid">
+          <div class="admin-notifications-panel">
+            <div class="section-subheading">
+              <h3>Notifikasi Checkout</h3>
+              <p>Daftar pesanan masuk dan bukti pembayaran.</p>
+            </div>
+            <div id="admin-notifications" class="admin-notifications">
+              <p>Memuat notifikasi...</p>
+            </div>
+          </div>
+
+          <div class="admin-product-form">
+            <div class="section-subheading">
+              <h3>Tambah Produk</h3>
+              <p>Tambahkan produk baru ke katalog toko Anda.</p>
+            </div>
           <div class="section-heading">
             <span>Produk Baru</span>
             <h2>Tambah Barang dan Foto Produk</h2>
@@ -72,6 +87,13 @@
             <button type="submit" class="btn btn-primary">Tambah Produk</button>
           </form>
           <div id="product-form-message" class="product-form-message"></div>
+          <div class="section-subheading">
+            <h3>Produk Terbaru</h3>
+            <p>Daftar produk terbaru yang ditambahkan ke katalog.</p>
+          </div>
+          <div id="latest-products" class="latest-products-panel">
+            <p>Memuat produk terbaru...</p>
+          </div>
         </div>
       </div>
     </section>
@@ -94,5 +116,6 @@
 
   <script src="js/script.js"></script>
   <script src="js/admin.js"></script>
+  <script src="js/admin-auth-check.js"></script>
 </body>
 </html>

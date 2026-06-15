@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Login - Dimzjie Outfit</title>
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+  <main class="admin-login-page">
+    <div class="admin-login-box">
+      <div class="section-heading">
+        <span>Admin Login</span>
+        <h2>Masuk dengan kata sandi admin</h2>
+      </div>
+      <form id="admin-login-form" class="admin-login-form">
+        <label>
+          Kata Sandi Admin
+          <input id="admin-password-input" type="password" placeholder="Masukkan kata sandi" required />
+        </label>
+        <button type="submit" class="btn btn-primary">Masuk</button>
+        <div id="admin-login-error" class="admin-login-error"></div>
+      </form>
+    </div>
+  </main>
+
+  <script src="js/admin-auth.js"></script>
+</body>
+</html>
